@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8">
+		<attributes>
+			<attribute name="maven.pomderived" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="src" output="target/classes" path="src">
+		<attributes>
+			<attribute name="optional" value="true"/>
+			<attribute name="maven.pomderived" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="con" path="org.eclipse.m2e.MAVEN2_CLASSPATH_CONTAINER">
+		<attributes>
+			<attribute name="maven.pomderived" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="lib/Selenium/byte-buddy-1.8.3.jar"/>
+	<classpathentry kind="lib" path="lib/Selenium/client-combined-3.13.0-sources.jar"/>
+	<classpathentry kind="lib" path="lib/Selenium/client-combined-3.13.0.jar"/>
+	<classpathentry kind="lib" path="lib/Selenium/commons-codec-1.10.jar"/>
+	<classpathentry kind="lib" path="lib/Selenium/commons-exec-1.3.jar"/>
+	<classpathentry kind="lib" path="lib/Selenium/commons-logging-1.2.jar"/>
+	<classpathentry kind="lib" path="lib/Selenium/gson-2.8.4.jar"/>
+	<classpathentry kind="lib" path="lib/Selenium/guava-25.0-jre.jar"/>
+	<classpathentry kind="lib" path="lib/Selenium/htmlunit-core-js-2.13.jar"/>
+	<classpathentry kind="lib" path="lib/Selenium/httpclient-4.5.5.jar"/>
+	<classpathentry kind="lib" path="lib/Selenium/httpcore-4.4.9.jar"/>
+	<classpathentry kind="lib" path="lib/Selenium/mysql-connector-java-5.1.48.jar"/>
+	<classpathentry kind="lib" path="lib/Selenium/okhttp-3.10.0.jar"/>
+	<classpathentry kind="lib" path="lib/Selenium/okio-1.14.1.jar"/>
+	<classpathentry kind="output" path="target/classes"/>
+</classpath>
