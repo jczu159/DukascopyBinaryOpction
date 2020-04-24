@@ -7,28 +7,29 @@ import org.openqa.selenium.WebDriver;
 import com.binary.run.util.DriverFactory;
 
 public class Dukascopy {
-	static WebDriver webObj = null;
-
-	static String chromePath = "";
+//	static WebDriver webObj = null;
+//
+//	static String chromePath = "";
 
 	public static void main(String[] args) throws InterruptedException {
 
-		chromePath = "C:/Users/admin/Desktop/chromedriver.exe";
-		webObj = DriverFactory.getDriver(chromePath);
-		webObj.get("https://demo-login.dukascopy.com/binary/");
-		dukascopyBinaryOpction(webObj, "USD/CHF", "45", "0", "11", "PUT");
+//		chromePath = "C:/Users/admin/Desktop/chromedriver.exe";
+//		webObj = DriverFactory.getDriver(chromePath);
+//		webObj.get("https://demo-login.dukascopy.com/binary/");
+//		dukascopyBinaryOpction(webObj, "USD/CHF", "45", "0", "11", "PUT");
 	}
 
 	public static void dukascopyBinaryOpction(WebDriver webObj, String Symbol, String Amount, String BetHour,
 			String BetMinute, String BetType) throws InterruptedException {
-		Login(webObj);
+//		Login(webObj);
 		// *[@id="button-1267"]
-
+		System.out.println("進入下單模組化______>>>>");
 		// 檢查品種物件是否存在
 
 		while (true) {
 			boolean checkSymbolDocument = isJudgingElement(webObj,
 					By.xpath("//*[@id='bp-instrumentfield-1085-inputEl']"));
+			
 			if (checkSymbolDocument) {
 				// 如果存在則進行 賦予值
 				// 設定下單
@@ -103,9 +104,9 @@ public class Dukascopy {
 		// is mnodel 模組化
 		System.out.println(" Run change Symbol Modularization 即將進行的商品列為:" + forexSymbol);
 		try {
-			// 清除下單列
-			webObj.findElement(By.xpath("//*[@id='bp-instrumentfield-1085-inputEl']")).clear();
-			Thread.sleep(1000);
+//			// 清除下單列
+//			webObj.findElement(By.xpath("//*[@id='bp-instrumentfield-1085-inputEl']")).clear();
+//			Thread.sleep(1000);
 
 			if (webObj instanceof JavascriptExecutor) {
 				((JavascriptExecutor) webObj).executeScript(
@@ -113,17 +114,26 @@ public class Dukascopy {
 			} else {
 				throw new IllegalStateException("This driver does not support JavaScript!");
 			}
+			
+			Thread.sleep(500);
 			webObj.findElement(By.xpath("//*[@id='bp-instrumentfield-1085-trigger-picker']")).click();
+			
+//			
+//			Thread.sleep(500);
+//			webObj.findElement(By.xpath("/html/body/div[23]/div/ul/div[2]")).click();
+//			
+		
+//									
 
-			String doubleCheckInputValue = webObj.findElement(By.xpath("//*[@id='bp-instrumentfield-1085-inputEl']"))
-					.getText();
-			// 確任下單
-			if (doubleCheckInputValue.equals(forexSymbol)) {
-				// *[@id="bp-instrumentfield-1085-trigger-picker"] //Symbol select 下拉框BAR
-				System.out.println("再次確認 - 點選確認框  double Check -- >> OK ");
-//				webObj.findElement(By.xpath("//*[@id='bp-instrumentfield-1085-trigger-picker']")).click();
-
-			}
+//			String doubleCheckInputValue = webObj.findElement(By.xpath("//*[@id='bp-instrumentfield-1085-inputEl']"))
+//					.getText();
+//			// 確任下單
+//			if (doubleCheckInputValue.equals(forexSymbol)) {
+//				// *[@id="bp-instrumentfield-1085-trigger-picker"] //Symbol select 下拉框BAR
+//				System.out.println("再次確認 - 點選確認框  double Check -- >> OK ");
+////				webObj.findElement(By.xpath("//*[@id='bp-instrumentfield-1085-trigger-picker']")).click();
+//
+//			}
 			// *[@id="bp-instrumentfield-1085-trigger-picker"]
 
 		} catch (InterruptedException e) {

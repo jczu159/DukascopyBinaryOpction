@@ -5,12 +5,17 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 
+import org.openqa.selenium.WebDriver;
+
 import com.alibaba.fastjson.JSONException;
 import com.alibaba.fastjson.JSONObject;
+import com.binary.run.util.DriverFactory;
 
 public class ClientTest {
 	public int port = 9877;
 	Socket socket = null;
+	static WebDriver webObj = null;
+	static String chromePath = "";
 
 	public static void main(String[] args) {
 		new ClientTest(); // 開始執行
@@ -18,10 +23,17 @@ public class ClientTest {
 
 	public ClientTest() {
 		try {
+			chromePath = "C:/Users/admin/Desktop/chromedriver.exe";
+			webObj = DriverFactory.getDriver(chromePath);
+			webObj.get("https://demo-login.dukascopy.com/binary/");
+			Dukascopy.Login(webObj);
+			
+			
 			socket = new Socket("45.32.49.87", port);
 			new Cthread().start();
 			BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			String msg1;
+			
 			while ((msg1 = br.readLine()) != null) {
 				System.out.println(msg1);
 				String amountlist[] = { "2", "5", "11", "25", "60", "140", "320" };
@@ -35,13 +47,19 @@ public class ClientTest {
 					
 					JSONObject jsOBj = (JSONObject) json.parse(msg1);
 					String Symbol = jsOBj.getString("symbol");
+					System.out.println("取得商品"+Symbol);
 					Integer amountListInt = Integer.valueOf(jsOBj.getString("martingale"));
+					System.out.println("取得加碼次數"+amountListInt);
 					String Amount = amountlist[amountListInt];
+					System.out.println("取得金額"+Amount);
 					String BetHour = jsOBj.getString("expireHourTime");
+					System.out.println("取得小時"+BetHour);
 					String BetMinute = jsOBj.getString("expireMinuteTime");
+					System.out.println("取得分鐘"+BetMinute);
 					String BetType = jsOBj.getString("direction");
-					System.out.println("或取道的JSON結果" + BetType);
-
+					System.out.println("取得方向"+BetType);
+					System.out.println("或取得的JSON結果" + BetType);
+					Dukascopy.dukascopyBinaryOpction(webObj, Symbol, Amount, BetHour, BetMinute, BetType);
 				}
 
 			}
