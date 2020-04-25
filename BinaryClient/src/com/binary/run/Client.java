@@ -33,14 +33,14 @@ public class Client {
 		String amountlist[] = { "2", "5", "11", "25", "60", "140", "320" };
 		// 建立連線指定Ip和埠的socket
 		// 獲取系統標準輸入流
-
-		// 登入下單葉面
-		try {
-			Dukascopy.Login(webObj);
-		} catch (InterruptedException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
+//
+//		// 登入下單葉面
+//		try {
+////			Dukascopy.Login(webObj);
+//		} catch (InterruptedException e1) {
+//			// TODO Auto-generated catch block
+//			e1.printStackTrace();
+//		}
 
 		Socket socket = new Socket("45.32.49.87", 9877);
 	

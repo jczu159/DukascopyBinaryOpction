@@ -52,7 +52,7 @@ public class Dukascopy {
 
 	}
 
-	public static boolean Login(WebDriver webObj) throws InterruptedException {
+	public static boolean Login(WebDriver webObj , String account ,String password) throws InterruptedException {
 		// 存取google Chrome 的 exe路徑
 		// *[@id="textfield-1020-inputEl"]
 		webObj.findElement(By.xpath("//*[@id='textfield-1020-inputEl']")).sendKeys("Samantha92");
