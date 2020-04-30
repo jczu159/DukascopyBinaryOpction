@@ -4,15 +4,19 @@ import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Date;
+import java.util.Properties;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.SpringLayout;
 
@@ -26,6 +30,7 @@ public class WindowsBulider {
 	private JTextField chromePath;
 	private JTextField AmountSetting;
 	private JTextField passwordField;
+	private boolean isTest = true;
 
 	/**
 	 * Launch the application.
@@ -45,15 +50,19 @@ public class WindowsBulider {
 
 	/**
 	 * Create the application.
+	 * 
+	 * @throws IOException
 	 */
-	public WindowsBulider() {
+	public WindowsBulider() throws IOException {
 		initialize();
 	}
 
 	/**
 	 * Initialize the contents of the frame.
+	 * 
+	 * @throws IOException
 	 */
-	private void initialize() {
+	private void initialize() throws IOException {
 		frame = new JFrame("杜卡斯貝全自動下單系統");
 		frame.setBounds(100, 100, 450, 300);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -102,8 +111,8 @@ public class WindowsBulider {
 							String path = chromePath.getText();
 							String outpath = path.replace('\\', '/');
 							String amount[] = AmountSetting.getText().split(",");
+							System.out.println("帳號與版本號碼驗證通過，歡迎:" + accountText.getText() + "回來");
 
-							System.out.println("驗證通過");
 							ClientTest run = new ClientTest(accountText.getText(), passwordField.getText(), outpath,
 									amount);
 						}
@@ -143,7 +152,7 @@ public class WindowsBulider {
 		chromePath = new JTextField();
 		springLayout.putConstraint(SpringLayout.NORTH, chromePath, -3, SpringLayout.NORTH, lblChrome);
 		springLayout.putConstraint(SpringLayout.WEST, chromePath, 0, SpringLayout.WEST, accountText);
-		springLayout.putConstraint(SpringLayout.EAST, chromePath, 170, SpringLayout.EAST, lblChrome);
+		springLayout.putConstraint(SpringLayout.EAST, chromePath, 0, SpringLayout.EAST, accountText);
 		frame.getContentPane().add(chromePath);
 		chromePath.setColumns(10);
 
@@ -166,12 +175,36 @@ public class WindowsBulider {
 		frame.getContentPane().add(passwordField);
 		passwordField.setColumns(10);
 
-		accountText.setText("Samantha92");
-		chromePath.setText("C:/Users/admin/Desktop/chromedriver.exe");
-		passwordField.setText("40031810");
-		AmountSetting.setText("10,23,46,92,184,368,640");
+		if (isTest) {
+			accountText.setText("Samantha92");
+			chromePath.setText("C:/Users/admin/Desktop/chromedriver.exe");
+			passwordField.setText("40031810");
+			AmountSetting.setText("10,23,46,92,184,368,640");
+		} else {
+			InputStreamReader inputStream = null;
+			String result = "";
+			try {
+				Properties prop = new Properties();
+				String propFileName = "config.txt";
+				inputStream = new InputStreamReader(new FileInputStream("./config.txt"), "UTF-8");
+				if (inputStream != null) {
+					prop.load(inputStream);
+				} else {
+					throw new FileNotFoundException("property file '" + propFileName + "' not found in the classpath");
+				}
+				Date time = new Date(System.currentTimeMillis());
+				accountText.setText(prop.getProperty("account"));
+				chromePath.setText(prop.getProperty("chromepath"));
+				passwordField.setText(prop.getProperty("password"));
+				AmountSetting.setText(prop.getProperty("amount"));
 
-
+				result = "";
+			} catch (Exception e) {
+				System.out.println("Exception: " + e);
+			} finally {
+				inputStream.close();
+			}
+		}
 	}
 
 	private static boolean sendGet(String account, String version) throws Exception {

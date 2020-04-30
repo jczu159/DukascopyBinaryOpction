@@ -24,18 +24,18 @@ public class ClientTest {
 
 	public ClientTest(String account, String password, String chromePath, String[] amountlist) {
 		try {
-			chromePath = "C:/Users/admin/Desktop/chromedriver.exe";
+
 			webObj = DriverFactory.getDriver(chromePath);
 			webObj.get("https://demo-login.dukascopy.com/binary/");
 			Dukascopy.Login(webObj, account, password);
 
+			System.out.println("開始建立Socket 連線通訊 ．．．．．");
 			socket = new Socket("45.32.49.87", port);
 			new Cthread().start();
 			BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			String msg1;
 
 			while ((msg1 = br.readLine()) != null) {
-				System.out.println("接收出雜訊:" + msg1);
 
 				if (!msg1.equals(" ") && !msg1.isEmpty() && msg1.length() != 0) {
 
@@ -45,7 +45,7 @@ public class ClientTest {
 
 					boolean isJson = isJSONValid(msg1);
 					boolean validateJson = isJSON2(msg1);
-					System.out.println("是不是JSON :" + isJson + " validateJson:" + validateJson);
+//					System.out.println("是不是JSON :" + isJson + " validateJson:" + validateJson);
 
 					if (isJson == true && validateJson == true) {
 
@@ -53,19 +53,21 @@ public class ClientTest {
 						String Symbol = jsOBj.getString("symbol");
 						StringBuffer sb = new StringBuffer(Symbol);
 						Symbol = sb.insert(3, "/").toString();
-						System.out.println("取得商品" + Symbol);
+						System.out.println("取得此次下單商品" + Symbol);
 						Integer amountListInt = Integer.valueOf(jsOBj.getString("martingale"));
-						System.out.println("取得加碼次數" + amountListInt);
+						System.out.println("取得此次加碼次數" + amountListInt);
 						String Amount = amountlist[amountListInt];
-						System.out.println("取得金額" + Amount);
+						System.out.println("取得此次下單金額" + Amount);
 						String BetHour = jsOBj.getString("expireHourTime");
-						System.out.println("取得小時" + BetHour);
+						System.out.println("取得此次下單小時" + BetHour);
 						String BetMinute = jsOBj.getString("expireMinuteTime");
-						System.out.println("取得分鐘" + BetMinute);
+						System.out.println("取得此次下單分鐘" + BetMinute);
 						String BetType = jsOBj.getString("direction");
-						System.out.println("取得方向" + BetType);
-						System.out.println("或取得的JSON結果" + BetType);
-						Dukascopy.dukascopyBinaryOpction(webObj, Symbol, Amount, BetHour, BetMinute, BetType);
+						System.out.println("取得此次下單方向" + BetType);
+						// 如果金額不等於0才進入下單，可以讓使用者自行控制下單的方向
+						if (!Amount.equals("0")) {
+							Dukascopy.dukascopyBinaryOpction(webObj, Symbol, Amount, BetHour, BetMinute, BetType);
+						}
 					}
 				}
 

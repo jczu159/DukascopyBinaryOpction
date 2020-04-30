@@ -23,13 +23,14 @@ public class Dukascopy {
 			String BetMinute, String BetType) throws InterruptedException {
 //		Login(webObj);
 		// *[@id="button-1267"]
-		System.out.println("進入下單模組化______>>>>");
-		// 檢查品種物件是否存在
+		System.out.println("請稍後，我們即將為您下單");
+		System.out.println("初始化模組中.....");
+		// 檢查品種物件是否存在。
 
 		while (true) {
 			boolean checkSymbolDocument = isJudgingElement(webObj,
 					By.xpath("//*[@id='bp-instrumentfield-1085-inputEl']"));
-			
+
 			if (checkSymbolDocument) {
 				// 如果存在則進行 賦予值
 				// 設定下單
@@ -52,7 +53,7 @@ public class Dukascopy {
 
 	}
 
-	public static boolean Login(WebDriver webObj , String account ,String password) throws InterruptedException {
+	public static boolean Login(WebDriver webObj, String account, String password) throws InterruptedException {
 		// 存取google Chrome 的 exe路徑
 		// *[@id="textfield-1020-inputEl"]
 		webObj.findElement(By.xpath("//*[@id='textfield-1020-inputEl']")).sendKeys("Samantha92");
@@ -76,7 +77,7 @@ public class Dukascopy {
 			boolean loginPageCloseButton = isJudgingElement(webObj,
 					By.xpath("/html/body/div[17]/div[3]/div/div/a[3]/span/span/span[2]"));
 			if (loginPageCloseButton) {
-				System.out.println("點擊廣告按鍵 -  close");
+				System.out.println("請稍後，關閉登入頁面廣告內容.....");
 				webObj.findElement(By.xpath("/html/body/div[17]/div[3]/div/div/a[3]/span/span/span[2]")).click();
 				break;
 			}
@@ -85,12 +86,13 @@ public class Dukascopy {
 		return true;
 	}
 
-	public static boolean isJudgingElement(WebDriver webDriver, By by) {
+	public static boolean isJudgingElement(WebDriver webDriver, By by) throws InterruptedException {
 		try {
 			webDriver.findElement(by);
 			return true;
 		} catch (Exception e) {
-			System.out.println("不存在此元素 : " + by);
+			System.out.println("warning!! 系統將等候畫面初始化完成 原因:不存在元素:" + by);
+			Thread.sleep(2000);
 			return false;
 		}
 	}
@@ -102,7 +104,7 @@ public class Dukascopy {
 	 */
 	public static boolean clickChangeSymbol(WebDriver webObj, String forexSymbol) {
 		// is mnodel 模組化
-		System.out.println(" Run change Symbol Modularization 即將進行的商品列為:" + forexSymbol);
+		System.out.println("Run change Symbol Modularization 即將進行的商品列為:" + forexSymbol);
 		try {
 //			// 清除下單列
 //			webObj.findElement(By.xpath("//*[@id='bp-instrumentfield-1085-inputEl']")).clear();
@@ -114,15 +116,15 @@ public class Dukascopy {
 			} else {
 				throw new IllegalStateException("This driver does not support JavaScript!");
 			}
-			
+
 			Thread.sleep(500);
 			webObj.findElement(By.xpath("//*[@id='bp-instrumentfield-1085-trigger-picker']")).click();
-			
+
 //			
 //			Thread.sleep(500);
 //			webObj.findElement(By.xpath("/html/body/div[23]/div/ul/div[2]")).click();
 //			
-		
+
 //									
 
 //			String doubleCheckInputValue = webObj.findElement(By.xpath("//*[@id='bp-instrumentfield-1085-inputEl']"))
@@ -151,7 +153,6 @@ public class Dukascopy {
 	 */
 	public static boolean setBetAmount(WebDriver webObj, String Amount) {
 
-		System.out.println("開始處理下單金額 -- >>");
 		webObj.findElement(By.xpath("//*[@id='bp-amountfield-1086-inputEl']")).clear();
 		if (webObj instanceof JavascriptExecutor) {
 			((JavascriptExecutor) webObj)
@@ -175,8 +176,20 @@ public class Dukascopy {
 		// 設定小時 設定小時 input value --
 		webObj.findElement(By.xpath("//*[@id='bp-numberfield-1089-inputEl']")).clear();
 		if (webObj instanceof JavascriptExecutor) {
-			((JavascriptExecutor) webObj)
-					.executeScript("document.getElementById('bp-numberfield-1089-inputEl').value = '" + BetHour + "'");
+//			((JavascriptExecutor) webObj)
+//					.executeScript("document.getElementById('bp-numberfield-1089-inputEl').value = '" + BetHour + "'");
+			String returnJsBetHourValue = (String) ((JavascriptExecutor) webObj)
+					.executeScript("return document.getElementById('bp-numberfield-1089-inputEl').value");
+
+			while (!returnJsBetHourValue.equals(BetHour)) {
+				((JavascriptExecutor) webObj).executeScript(
+						"document.getElementById('bp-numberfield-1089-inputEl').value = '" + BetHour + "'");
+
+				returnJsBetHourValue = (String) ((JavascriptExecutor) webObj)
+						.executeScript("return document.getElementById('bp-numberfield-1089-inputEl').value");
+			}
+
+
 		} else {
 			throw new IllegalStateException("This driver does not support JavaScript!");
 		}
@@ -192,9 +205,19 @@ public class Dukascopy {
 	public static boolean seMminutes(WebDriver webObj, String BetMinute) {
 		webObj.findElement(By.xpath("//*[@id='bp-numberfield-1090-inputEl']")).clear();
 		if (webObj instanceof JavascriptExecutor) {
-			((JavascriptExecutor) webObj).executeScript(
-					"document.getElementById('bp-numberfield-1090-inputEl').value = '" + BetMinute + "'");
-
+//			((JavascriptExecutor) webObj).executeScript(
+//					"document.getElementById('bp-numberfield-1090-inputEl').value = '" + BetMinute + "'");
+					
+			String returnJsBetMminutesValue = (String) ((JavascriptExecutor) webObj)
+					.executeScript("return document.getElementById('bp-numberfield-1090-inputEl').value");
+			while (!returnJsBetMminutesValue.equals(BetMinute)) {
+				((JavascriptExecutor) webObj).executeScript(
+						"document.getElementById('bp-numberfield-1090-inputEl').value = '" + BetMinute + "'");
+				returnJsBetMminutesValue = (String) ((JavascriptExecutor) webObj)
+						.executeScript("return document.getElementById('bp-numberfield-1090-inputEl').value");
+			}
+			
+			
 		} else {
 			throw new IllegalStateException("This driver does not support JavaScript!");
 		}
