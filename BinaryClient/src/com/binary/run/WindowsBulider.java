@@ -30,7 +30,7 @@ public class WindowsBulider {
 	private JTextField chromePath;
 	private JTextField AmountSetting;
 	private JTextField passwordField;
-	private boolean isTest = true;
+	private boolean isTest = false;
 
 	/**
 	 * Launch the application.
@@ -135,7 +135,7 @@ public class WindowsBulider {
 
 		closeButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				System.out.println("正在為您終止程式 -- >>");
+				System.out.println("正在為您終止程式 ．．．．．");
 				try {
 					System.exit(0);
 				} catch (Exception e1) {
