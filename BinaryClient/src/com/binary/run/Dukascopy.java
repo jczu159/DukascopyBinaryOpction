@@ -39,15 +39,16 @@ public class Dukascopy {
 				break;
 			}
 		}
+		Thread.sleep(500);
 		// 處理下單金額
 		setBetAmount(webObj, Amount);
-
+		Thread.sleep(500);
 		// 設定小時
 		setBetHour(webObj, BetHour);
-
+		Thread.sleep(500);
 		// 設定分鐘
 		seMminutes(webObj, BetMinute);
-
+		Thread.sleep(500);
 		// 設定下單方向
 		setBetType(webObj, BetType);
 
@@ -56,29 +57,38 @@ public class Dukascopy {
 	public static boolean Login(WebDriver webObj, String account, String password) throws InterruptedException {
 		// 存取google Chrome 的 exe路徑
 		// *[@id="textfield-1020-inputEl"]
-		webObj.findElement(By.xpath("//*[@id='textfield-1020-inputEl']")).sendKeys("Samantha92");
+		webObj.findElement(By.xpath("//*[@id='textfield-1020-inputEl']")).sendKeys(account);
 		Thread.sleep(3000);
 		// *[@id="textfield-1021-inputEl"]
-		webObj.findElement(By.xpath("//*[@id='textfield-1021-inputEl']")).sendKeys("40031810");
+		webObj.findElement(By.xpath("//*[@id='textfield-1021-inputEl']")).sendKeys(password);
 		Thread.sleep(3000);
 		// *[@id="button-1034"]
 		webObj.findElement(By.xpath("//*[@id='button-1034']")).click();
 
-		// 登入 check1288
-		boolean checkClose = isJudgingElement(webObj, By.xpath("//*[@id='button-1288']"));
-		if (checkClose) {
-			webObj.findElement(By.xpath("//*[@id='button-1288']")).click();
-		}
 //
-		System.out.println("查詢頁面上登入廣告效果 -- >> ");
+		System.out.println("初始化頁面中...等待廣告業面載入完成並進行關閉");
+		System.out.println("需等待兩秒");
 		while (true) {
 			// 死循環重複查詢
+			// *[@id="bp-window-welcome-1195"]
+			Thread.sleep(1000);
+			boolean loginPageCloseDiv_1 = isJudgingElement(webObj, By.xpath("/html/body/div[17]"));
 
-			boolean loginPageCloseButton = isJudgingElement(webObj,
-					By.xpath("/html/body/div[17]/div[3]/div/div/a[3]/span/span/span[2]"));
-			if (loginPageCloseButton) {
-				System.out.println("請稍後，關閉登入頁面廣告內容.....");
-				webObj.findElement(By.xpath("/html/body/div[17]/div[3]/div/div/a[3]/span/span/span[2]")).click();
+			boolean loginPageCloseDiv_2 = isJudgingElement(webObj, By.xpath("/html/body/div[18]"));
+
+			if (loginPageCloseDiv_1 == true || loginPageCloseDiv_2 == true) {
+
+				// 登入 check1288
+				boolean buttonClose_1 = isJudgingElement(webObj,
+						By.xpath("/html/body/div[17]/div[3]/div/div/a[3]/span/span/span[2]"));
+				if (buttonClose_1) {
+					webObj.findElement(By.xpath("/html/body/div[17]/div[3]/div/div/a[3]/span/span/span[2]")).click();
+				}
+				boolean buttonClose_2 = isJudgingElement(webObj,
+						By.xpath("/html/body/div[18]/div[3]/div/div/a[3]/span/span/span[2]"));
+				if (buttonClose_2) {
+					webObj.findElement(By.xpath("/html/body/div[18]/div[3]/div/div/a[3]/span/span/span[2]")).click();
+				}
 				break;
 			}
 
@@ -189,7 +199,6 @@ public class Dukascopy {
 						.executeScript("return document.getElementById('bp-numberfield-1089-inputEl').value");
 			}
 
-
 		} else {
 			throw new IllegalStateException("This driver does not support JavaScript!");
 		}
@@ -207,7 +216,7 @@ public class Dukascopy {
 		if (webObj instanceof JavascriptExecutor) {
 //			((JavascriptExecutor) webObj).executeScript(
 //					"document.getElementById('bp-numberfield-1090-inputEl').value = '" + BetMinute + "'");
-					
+
 			String returnJsBetMminutesValue = (String) ((JavascriptExecutor) webObj)
 					.executeScript("return document.getElementById('bp-numberfield-1090-inputEl').value");
 			while (!returnJsBetMminutesValue.equals(BetMinute)) {
@@ -216,8 +225,7 @@ public class Dukascopy {
 				returnJsBetMminutesValue = (String) ((JavascriptExecutor) webObj)
 						.executeScript("return document.getElementById('bp-numberfield-1090-inputEl').value");
 			}
-			
-			
+
 		} else {
 			throw new IllegalStateException("This driver does not support JavaScript!");
 		}
@@ -260,6 +268,24 @@ public class Dukascopy {
 		}
 		return false;
 
+	}
+
+	/**
+	 * @author admin 取得下單時的價位
+	 * @param webObj
+	 * @param BetType
+	 * @return
+	 */
+	public static Object getBetPrice(WebDriver webObj, String BetType) {
+		Object betPrice = "";
+		if (BetType.equals("CALL")) {
+			betPrice = ((JavascriptExecutor) webObj).executeScript(
+					"return document.getElementsByClassName('call x-unselectable')[0].childNodes[2].childNodes[1].innerText");
+		} else {
+			betPrice = (String) ((JavascriptExecutor) webObj).executeScript(
+					"return document.getElementsByClassName('put x-unselectable')[0].childNodes[2].childNodes[1].innerText");
+		}
+		return betPrice;
 	}
 
 }

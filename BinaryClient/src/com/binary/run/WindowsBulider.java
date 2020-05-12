@@ -176,9 +176,9 @@ public class WindowsBulider {
 		passwordField.setColumns(10);
 
 		if (isTest) {
-			accountText.setText("Samantha92");
+			accountText.setText("Wyke77");
 			chromePath.setText("C:/Users/admin/Desktop/chromedriver.exe");
-			passwordField.setText("40031810");
+			passwordField.setText("18124562");
 			AmountSetting.setText("10,23,46,92,184,368,640");
 		} else {
 			InputStreamReader inputStream = null;
