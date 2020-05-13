@@ -21,13 +21,14 @@ import com.binary.run.util.TimeJob;
 import com.google.gson.JsonObject;
 
 public class ClientTest {
+	public static WebDriver webObj;
 	public int port = 9877;
 	Socket socket = null;
-	static WebDriver webObj = null;
 	static String chromePath = "";
 
 	public static void main(String[] args) {
-//		new ClientTest("", "", "C:/Users/admin/Desktop/chromedriver.exe", null); // 開始執行
+		// new ClientTest("", "", "C:/Users/admin/Desktop/chromedriver.exe",
+		// null); // 開始執行
 	}
 
 	public ClientTest(String account, String password, String chromePath, String[] amountlist) {
@@ -45,20 +46,22 @@ public class ClientTest {
 
 			Timer timer = new Timer();
 			long delay1 = 1000;
-			long period1 =  60 * 1000;
+			long period1 = 60 * 1000;
 			// 從現在開始 1 秒鐘之後，每隔 1 秒鐘執行一次 job1
-			timer.schedule(new TimeJob(), delay1, period1);
+			timer.schedule(new TimeJob(webObj), delay1, period1);
 
 			while ((msg1 = br.readLine()) != null) {
 
 				if (!msg1.equals(" ") && !msg1.isEmpty() && msg1.length() != 0) {
 
-//					String amountlist[] = { "10", "23", "46", "92", "184", "368", "640" };
+					// String amountlist[] = { "10", "23", "46", "92", "184",
+					// "368", "640" };
 					System.out.println("取得json字串:" + msg1);
 
 					boolean isJson = isJSONValid(msg1);
 					boolean validateJson = isJSON2(msg1);
-//					System.out.println("是不是JSON :" + isJson + " validateJson:" + validateJson);
+					// System.out.println("是不是JSON :" + isJson + "
+					// validateJson:" + validateJson);
 
 					if (isJson == true && validateJson == true) {
 						JSONObject jsOBj = new JSONObject();
@@ -202,5 +205,6 @@ public class ClientTest {
 		}
 		return result;
 	}
+
 
 }
