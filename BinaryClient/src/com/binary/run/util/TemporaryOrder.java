@@ -10,7 +10,6 @@ public class TemporaryOrder {
 
 	static HashMap<String, JSONObject> hashMap = new HashMap<>();
 
-	
 	public static boolean put(JSONObject json) {
 		boolean MapNotNull = false;
 		SimpleDateFormat sdf = new SimpleDateFormat();// 格式化时间
@@ -22,6 +21,12 @@ public class TemporaryOrder {
 			MapNotNull = true;
 		}
 		return MapNotNull;
+	}
+
+	public static HashMap get() {
+
+		return hashMap;
+
 	}
 
 }

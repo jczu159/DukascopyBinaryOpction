@@ -6,6 +6,7 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Timer;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.json.Json;
@@ -16,6 +17,7 @@ import com.alibaba.fastjson.JSONException;
 import com.alibaba.fastjson.JSONObject;
 import com.binary.run.util.DriverFactory;
 import com.binary.run.util.TemporaryOrder;
+import com.binary.run.util.TimeJob;
 import com.google.gson.JsonObject;
 
 public class ClientTest {
@@ -40,6 +42,12 @@ public class ClientTest {
 			new Cthread().start();
 			BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			String msg1;
+
+			Timer timer = new Timer();
+			long delay1 = 1000;
+			long period1 =  60 * 1000;
+			// 從現在開始 1 秒鐘之後，每隔 1 秒鐘執行一次 job1
+			timer.schedule(new TimeJob(), delay1, period1);
 
 			while ((msg1 = br.readLine()) != null) {
 
