@@ -56,7 +56,7 @@ public class TimeJob extends TimerTask {
 	}
 
 	/**
-	 * @author IMI-JAVA-Ryan 找尋價格並判斷是否勝利
+	 * @author IMI-JAVA-Ryan 找尋價格並判斷是否勝利喔
 	 * @return
 	 */
 	public static boolean findPriceAndJudgeOutcome() {
