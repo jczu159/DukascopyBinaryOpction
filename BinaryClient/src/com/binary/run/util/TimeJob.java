@@ -29,44 +29,34 @@ public class TimeJob extends TimerTask {
 			ObjData.forEach((key, val) -> {
 
 				System.out.println("取得等待判斷的資料:" + val.toJSONString());
-				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd HH:mm:ss");
 
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd HH:mm:ss");
 				String dataTime = (String) val.get("betTime");
 				try {
 					Date dataDate = sdf.parse(dataTime);
 					Date nowData = new Date();
 					if (nowData.getTime() >= dataDate.getTime()) {
-						System.out.println("新排程缺換商品");
-						while (true) {
-							boolean checkSymbolDocument = Dukascopy.isJudgingElement(webObj,
-									By.xpath("//*[@id='bp-instrumentfield-1085-inputEl']"));
+						System.out.println("排程開始切換商品，並取得目前價位，請稍後");
+						Dukascopy.selectOrderList(webObj, val.get("Symbol").toString());
+						Thread.sleep(5000);
 
-							if (checkSymbolDocument) {
-								// 如果存在則進行 賦予值
-								// 設定下單
-								Dukascopy.clickChangeSymbol(webObj, val.get("Symbol").toString());
-								Thread.sleep(1000);
-								break;
-							}
-						}
-						Thread.sleep(2000);
 						if (val.get("BetType").equals("CALL")) {
 							Object betPric = Dukascopy.getBetPrice(webObj, "CALL");
 							System.out.println("新排程取得價格" + betPric.toString());
+					
+							//判斷好價格 是否需要進行加碼
+							//
 
 						} else if (val.get("BetType").equals("PUT")) {
 							Object betPric = Dukascopy.getBetPrice(webObj, "PUT");
 							System.out.println("新排程取得價格" + betPric.toString());
 						}
 
-					} else if (nowData.getTime() <= dataDate.getTime()) { 
-						System.out.println("該週期時間還尚未到達");
 					}
 
 				} catch (Exception e) {
-					System.out.println("每分鐘排程-系統發生不可預期錯誤:" + e);
+					System.out.println("每分鐘排程發生不可預期錯誤:" + e);
 				}
-				// 時間大於特定區間
 
 			});
 		}
@@ -81,7 +71,9 @@ public class TimeJob extends TimerTask {
 
 		return false;
 
-	}
+	}	
+	
+	
 
 	public static void main(String[] args) {
 

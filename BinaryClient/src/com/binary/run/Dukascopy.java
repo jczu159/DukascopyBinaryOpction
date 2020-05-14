@@ -7,38 +7,27 @@ import org.openqa.selenium.WebDriver;
 import com.binary.run.util.DriverFactory;
 
 public class Dukascopy {
-//	static WebDriver webObj = null;
-//
-//	static String chromePath = "";
+	// static WebDriver webObj = null;
+	//
+	// static String chromePath = "";
 
 	public static void main(String[] args) throws InterruptedException {
 
-//		chromePath = "C:/Users/admin/Desktop/chromedriver.exe";
-//		webObj = DriverFactory.getDriver(chromePath);
-//		webObj.get("https://demo-login.dukascopy.com/binary/");
-//		dukascopyBinaryOpction(webObj, "USD/CHF", "45", "0", "11", "PUT");
+		// chromePath = "C:/Users/admin/Desktop/chromedriver.exe";
+		// webObj = DriverFactory.getDriver(chromePath);
+		// webObj.get("https://demo-login.dukascopy.com/binary/");
+		// dukascopyBinaryOpction(webObj, "USD/CHF", "45", "0", "11", "PUT");
 	}
 
 	public static void dukascopyBinaryOpction(WebDriver webObj, String Symbol, String Amount, String BetHour,
 			String BetMinute, String BetType) throws InterruptedException {
-//		Login(webObj);
+		// Login(webObj);
 		// *[@id="button-1267"]
 		System.out.println("請稍後，我們即將為您下單");
 		System.out.println("初始化模組中.....");
 		// 檢查品種物件是否存在。
 
-		while (true) {
-			boolean checkSymbolDocument = isJudgingElement(webObj,
-					By.xpath("//*[@id='bp-instrumentfield-1085-inputEl']"));
-
-			if (checkSymbolDocument) {
-				// 如果存在則進行 賦予值
-				// 設定下單
-				clickChangeSymbol(webObj, Symbol);
-				Thread.sleep(1000);
-				break;
-			}
-		}
+		selectOrderList(webObj, Symbol);
 		Thread.sleep(500);
 		// 處理下單金額
 		setBetAmount(webObj, Amount);
@@ -65,7 +54,7 @@ public class Dukascopy {
 		// *[@id="button-1034"]
 		webObj.findElement(By.xpath("//*[@id='button-1034']")).click();
 
-//
+		//
 		System.out.println("初始化頁面中...等待廣告業面載入完成並進行關閉");
 		System.out.println("需等待兩秒");
 		while (true) {
@@ -116,9 +105,9 @@ public class Dukascopy {
 		// is mnodel 模組化
 		System.out.println("Run change Symbol Modularization 即將進行的商品列為:" + forexSymbol);
 		try {
-//			// 清除下單列
-//			webObj.findElement(By.xpath("//*[@id='bp-instrumentfield-1085-inputEl']")).clear();
-//			Thread.sleep(1000);
+			// // 清除下單列
+			// webObj.findElement(By.xpath("//*[@id='bp-instrumentfield-1085-inputEl']")).clear();
+			// Thread.sleep(1000);
 
 			if (webObj instanceof JavascriptExecutor) {
 				((JavascriptExecutor) webObj).executeScript(
@@ -130,22 +119,24 @@ public class Dukascopy {
 			Thread.sleep(500);
 			webObj.findElement(By.xpath("//*[@id='bp-instrumentfield-1085-trigger-picker']")).click();
 
-//			
-//			Thread.sleep(500);
-//			webObj.findElement(By.xpath("/html/body/div[23]/div/ul/div[2]")).click();
-//			
+			//
+			// Thread.sleep(500);
+			// webObj.findElement(By.xpath("/html/body/div[23]/div/ul/div[2]")).click();
+			//
 
-//									
+			//
 
-//			String doubleCheckInputValue = webObj.findElement(By.xpath("//*[@id='bp-instrumentfield-1085-inputEl']"))
-//					.getText();
-//			// 確任下單
-//			if (doubleCheckInputValue.equals(forexSymbol)) {
-//				// *[@id="bp-instrumentfield-1085-trigger-picker"] //Symbol select 下拉框BAR
-//				System.out.println("再次確認 - 點選確認框  double Check -- >> OK ");
-////				webObj.findElement(By.xpath("//*[@id='bp-instrumentfield-1085-trigger-picker']")).click();
-//
-//			}
+			// String doubleCheckInputValue =
+			// webObj.findElement(By.xpath("//*[@id='bp-instrumentfield-1085-inputEl']"))
+			// .getText();
+			// // 確任下單
+			// if (doubleCheckInputValue.equals(forexSymbol)) {
+			// // *[@id="bp-instrumentfield-1085-trigger-picker"] //Symbol
+			// select 下拉框BAR
+			// System.out.println("再次確認 - 點選確認框 double Check -- >> OK ");
+			//// webObj.findElement(By.xpath("//*[@id='bp-instrumentfield-1085-trigger-picker']")).click();
+			//
+			// }
 			// *[@id="bp-instrumentfield-1085-trigger-picker"]
 
 		} catch (InterruptedException e) {
@@ -186,8 +177,9 @@ public class Dukascopy {
 		// 設定小時 設定小時 input value --
 		webObj.findElement(By.xpath("//*[@id='bp-numberfield-1089-inputEl']")).clear();
 		if (webObj instanceof JavascriptExecutor) {
-//			((JavascriptExecutor) webObj)
-//					.executeScript("document.getElementById('bp-numberfield-1089-inputEl').value = '" + BetHour + "'");
+			// ((JavascriptExecutor) webObj)
+			// .executeScript("document.getElementById('bp-numberfield-1089-inputEl').value
+			// = '" + BetHour + "'");
 			String returnJsBetHourValue = (String) ((JavascriptExecutor) webObj)
 					.executeScript("return document.getElementById('bp-numberfield-1089-inputEl').value");
 
@@ -214,8 +206,9 @@ public class Dukascopy {
 	public static boolean seMminutes(WebDriver webObj, String BetMinute) {
 		webObj.findElement(By.xpath("//*[@id='bp-numberfield-1090-inputEl']")).clear();
 		if (webObj instanceof JavascriptExecutor) {
-//			((JavascriptExecutor) webObj).executeScript(
-//					"document.getElementById('bp-numberfield-1090-inputEl').value = '" + BetMinute + "'");
+			// ((JavascriptExecutor) webObj).executeScript(
+			// "document.getElementById('bp-numberfield-1090-inputEl').value =
+			// '" + BetMinute + "'");
 
 			String returnJsBetMminutesValue = (String) ((JavascriptExecutor) webObj)
 					.executeScript("return document.getElementById('bp-numberfield-1090-inputEl').value");
@@ -239,7 +232,7 @@ public class Dukascopy {
 			if (BetType.equals("CALL")) {
 
 				// *[@id="ext-element-54"]
-//				webObj.findElement(By.id("ext-element-52")).click();
+				// webObj.findElement(By.id("ext-element-52")).click();
 				((JavascriptExecutor) webObj).executeScript(
 						"document.getElementById('bp-instrument-ticker-1082').childNodes[0].childNodes[0].childNodes[3].click()");
 				// *[@id="button-1006"]
@@ -286,6 +279,21 @@ public class Dukascopy {
 					"return document.getElementsByClassName('put x-unselectable')[0].childNodes[2].childNodes[1].innerText");
 		}
 		return betPrice;
+	}
+
+	public static boolean selectOrderList(WebDriver webObj, String Symbol) throws InterruptedException {
+
+		while (true) {
+			boolean checkSymbolDocument = isJudgingElement(webObj,
+					By.xpath("//*[@id='bp-instrumentfield-1085-inputEl']"));
+			if (checkSymbolDocument) {
+				clickChangeSymbol(webObj, Symbol);
+				Thread.sleep(1000);
+				break;
+			}
+		}
+		return true;
+
 	}
 
 }
