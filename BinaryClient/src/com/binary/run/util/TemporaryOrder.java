@@ -30,7 +30,15 @@ public class TemporaryOrder {
 		return hashMap;
 
 	}
-	
 
+	public static boolean reomve(String key) {
+		boolean success = false;
+		hashMap.remove(key);
+		if (hashMap.get(key) == null) {
+			success = true;
+		}
+		return success;
+
+	}
 
 }

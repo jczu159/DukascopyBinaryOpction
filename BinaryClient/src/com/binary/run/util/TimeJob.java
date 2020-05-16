@@ -26,30 +26,37 @@ public class TimeJob extends TimerTask {
 	public void run() {
 		HashMap<String, JSONObject> ObjData = TemporaryOrder.get();
 		if (ObjData != null) {
-			ObjData.forEach((key, val) -> {
+			ObjData.forEach((key, jsonVal) -> {
 
-				System.out.println("取得等待判斷的資料:" + val.toJSONString());
+				System.out.println("取得等待判斷的資料:" + jsonVal.toJSONString());
 
 				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd HH:mm:ss");
-				String dataTime = (String) val.get("betTime");
+				String dataTime = (String) jsonVal.get("betTime");
 				try {
 					Date dataDate = sdf.parse(dataTime);
 					Date nowData = new Date();
 					if (nowData.getTime() >= dataDate.getTime()) {
 						System.out.println("排程開始切換商品，並取得目前價位，請稍後");
-						Dukascopy.selectOrderList(webObj, val.get("Symbol").toString());
+						Dukascopy.selectOrderList(webObj, jsonVal.get("Symbol").toString());
 						Thread.sleep(5000);
 
-						if (val.get("BetType").equals("CALL")) {
-							Object betPric = Dukascopy.getBetPrice(webObj, "CALL");
-							System.out.println("新排程取得價格" + betPric.toString());
-					
-							//判斷好價格 是否需要進行加碼
-							//
-
-						} else if (val.get("BetType").equals("PUT")) {
-							Object betPric = Dukascopy.getBetPrice(webObj, "PUT");
-							System.out.println("新排程取得價格" + betPric.toString());
+						// 判斷是否成功 如不成功 返回false
+						boolean isWin = findPriceAndJudgeOutcome(webObj, jsonVal);
+						if (isWin) {
+							boolean romevekey = TemporaryOrder.reomve(key);
+							if (!romevekey) {
+								throw new Exception("刪除定時器 MAP中資料 發生錯誤");
+							}
+						} else {
+							//如果這次近來是第三次也不用再新增map狀態了
+							if (jsonVal.get("Symbol").toString().equals("3")) {
+								boolean romevekey = TemporaryOrder.reomve(key);
+								if (!romevekey) {
+									throw new Exception("刪除定時器 MAP中資料 發生錯誤");
+								}
+							}
+							//這裡必須要進行map資料的重新組合 
+							
 						}
 
 					}
@@ -65,15 +72,50 @@ public class TimeJob extends TimerTask {
 
 	/**
 	 * @author IMI-JAVA-Ryan 找尋價格並判斷是否勝利喔
+	 * @param jsonVal
+	 * @param webObj
 	 * @return
 	 */
-	public static boolean findPriceAndJudgeOutcome() {
+	public static boolean findPriceAndJudgeOutcome(WebDriver webObj, JSONObject jsonVal) {
 
-		return false;
+		boolean isWin = false;
 
-	}	
-	
-	
+		try {
+
+			if (jsonVal.get("BetType").equals("CALL")) {
+				Object betPric = Dukascopy.getBetPrice(webObj, "CALL");
+				System.out.println("新排程取得價格" + betPric.toString() + ": 接下來進行價格比對的動作");
+
+				double nowPrice = Double.parseDouble(betPric.toString());
+				double oldPrice = Double.parseDouble(jsonVal.get("pricee").toString());
+
+				if (nowPrice > oldPrice) {
+					System.out.println("恭喜獲得 : win");
+					isWin = true;
+				} else {
+					System.out.println("失敗 : failure");
+				}
+
+			} else if (jsonVal.get("BetType").equals("PUT")) {
+				Object betPric = Dukascopy.getBetPrice(webObj, "PUT");
+				System.out.println("新排程取得價格" + betPric.toString() + ": 接下來進行價格比對的動作");
+
+				double nowPrice = Double.parseDouble(betPric.toString());
+				double oldPrice = Double.parseDouble(jsonVal.get("pricee").toString());
+
+				if (nowPrice < oldPrice) {
+					isWin = true;
+					System.out.println("恭喜獲得 : win");
+				} else {
+					System.out.println("失敗 : failure");
+				}
+
+			}
+		} catch (Exception e) {
+			System.out.println("比對價格發生錯誤:" + e);
+		}
+		return isWin;
+	}
 
 	public static void main(String[] args) {
 
