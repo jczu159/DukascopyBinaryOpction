@@ -3,6 +3,7 @@ package com.binary.run.util;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.openqa.selenium.WebDriver;
 
@@ -10,7 +11,7 @@ import com.alibaba.fastjson.JSONObject;
 
 public class TemporaryOrder {
 
-	static HashMap<String, JSONObject> hashMap = new HashMap<>();
+	static ConcurrentHashMap <String, JSONObject> hashMap = new ConcurrentHashMap <>();
 
 	public static boolean put(JSONObject json) {
 		boolean MapNotNull = false;
@@ -25,7 +26,18 @@ public class TemporaryOrder {
 		return MapNotNull;
 	}
 
-	public static HashMap get() {
+	public static boolean putCover(String mapKey, JSONObject json) {
+		boolean MapNotNull = false;
+		hashMap.put(mapKey, json);
+
+		if (hashMap.get(mapKey) != null) {
+			MapNotNull = true;
+		}
+		return MapNotNull;
+
+	}
+
+	public static ConcurrentHashMap  get() {
 
 		return hashMap;
 

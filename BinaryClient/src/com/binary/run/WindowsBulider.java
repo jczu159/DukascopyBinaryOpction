@@ -30,7 +30,7 @@ public class WindowsBulider {
 	private JTextField chromePath;
 	private JTextField AmountSetting;
 	private JTextField passwordField;
-	private boolean isTest = false;
+	private boolean isTest = true;
 
 	/**
 	 * Launch the application.

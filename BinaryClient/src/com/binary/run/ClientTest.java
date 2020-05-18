@@ -25,6 +25,7 @@ public class ClientTest {
 	public int port = 9877;
 	Socket socket = null;
 	static String chromePath = "";
+	public static boolean lockThread = false;
 
 	public static void main(String[] args) {
 		// new ClientTest("", "", "C:/Users/admin/Desktop/chromedriver.exe",
@@ -48,7 +49,7 @@ public class ClientTest {
 			long delay1 = 1000;
 			long period1 = 60 * 1000;
 			// 從現在開始 1 秒鐘之後，每隔 1 秒鐘執行一次 job1
-			timer.schedule(new TimeJob(webObj), delay1, period1);
+			timer.schedule(new TimeJob(webObj, amountlist), delay1, period1);
 
 			while ((msg1 = br.readLine()) != null) {
 
@@ -73,6 +74,7 @@ public class ClientTest {
 							char firstChar = strChar[0];
 
 							if (firstChar == '{') {
+								// 如果近來是已經在處理下單 則進行lock
 								jsOBj = (JSONObject) jsOBj.get("result");
 								System.out.println("這是一般的JSON OBJ方法");
 								if ("binaryOption_A".equals(jsOBj.get("strategy"))) {
@@ -92,14 +94,20 @@ public class ClientTest {
 									System.out.println("取得此次下單方向" + BetType);
 									// 如果金額不等於0才進入下單，可以讓使用者自行控制下單的方向
 									if (!Amount.equals("0")) {
+										System.out.println("☆☆☆進行執行續安全鎖 ☆☆☆");
+										lockThread = true;
 										Dukascopy.dukascopyBinaryOpction(webObj, Symbol, Amount, BetHour, BetMinute,
 												BetType);
+										lockThread = false;
+										System.out.println("☆☆☆進行執行續安全解鎖 ☆☆☆");
 									}
 								}
 							} else if (firstChar == '[') {
 								System.out.println("this signs is json array");
 								JSONArray jsonAry = new JSONArray();
 								jsonAry = (JSONArray) jsOBj.get("result");
+								System.out.println("☆☆☆進行執行續安全鎖 ☆☆☆");
+								lockThread = true;
 								for (Object obar : jsonAry) {
 									jsOBj = jsOBj.parseObject(obar.toString());
 									if ("binaryOption_B".equals(jsOBj.get("strategy"))) {
@@ -124,23 +132,8 @@ public class ClientTest {
 										}
 										Object betPrice = Dukascopy.getBetPrice(webObj, BetType);
 										System.out.println("取得下單價格" + betPrice);
-
-										SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-										Date now = new Date();
-
 										JSONObject postData = new JSONObject();
-
-										long time = 60 * 60 * 1000;// 一小時之後時間
-										Date afterDate = new Date(now.getTime() + time);// 一小時之後的時間
-
-										System.out.println("取得系統當前時間:" + sdf.format(now));
-										System.out.println("取得系統一小時之後時間:" + sdf.format(afterDate));
-
-										postData.put("Symbol", Symbol);
-										postData.put("BetType", BetType);
-										postData.put("amountListInt", 1);
-										postData.put("betPrice", betPrice);
-										postData.put("betTime", sdf.format(afterDate));
+										postData = getCatchJsonObj(Symbol, BetType, betPrice, 1);
 
 										boolean checkPut = TemporaryOrder.put(postData);
 										if (checkPut) {
@@ -150,8 +143,9 @@ public class ClientTest {
 											System.out.println("ERROR !! : Failed to put in cache");
 										}
 									}
-
 								}
+								System.out.println("☆☆☆進行執行續安全解鎖☆☆☆");
+								lockThread = false;
 								System.out.println(jsonAry);
 							}
 
@@ -182,6 +176,28 @@ public class ClientTest {
 		}
 	}
 
+	public static JSONObject getCatchJsonObj(String Symbol, String BetType, Object betPrice, int i) {
+
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		Date now = new Date();
+
+		JSONObject postData = new JSONObject();
+
+		long time = 60 * 60 * 1000;// 一小時之後時間
+		Date afterDate = new Date(now.getTime() + time);// 一小時之後的時間
+
+		System.out.println("取得系統當前時間:" + sdf.format(now));
+		System.out.println("取得系統一小時之後時間:" + sdf.format(afterDate));
+
+		postData.put("Symbol", Symbol);
+		postData.put("BetType", BetType);
+		postData.put("amountListInt", i);
+		postData.put("betPrice", betPrice);
+		postData.put("betTime", sdf.format(afterDate));
+		return postData;
+
+	}
+
 	public final static boolean isJSONValid(String test) {
 		try {
 			JSONObject.parseObject(test);
@@ -205,6 +221,5 @@ public class ClientTest {
 		}
 		return result;
 	}
-
 
 }
