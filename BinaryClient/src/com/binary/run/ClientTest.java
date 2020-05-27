@@ -47,7 +47,7 @@ public class ClientTest {
 
 			Timer timer = new Timer();
 			long delay1 = 1000;
-			long period1 = 60 * 1000;
+			long period1 = 600000;
 			// 從現在開始 1 秒鐘之後，每隔 1 秒鐘執行一次 job1
 			timer.schedule(new TimeJob(webObj, amountlist), delay1, period1);
 
@@ -141,6 +141,35 @@ public class ClientTest {
 													+ postData.toString());
 										} else {
 											System.out.println("ERROR !! : Failed to put in cache");
+										}
+										// 執行C 策略 這裡是執行預選的功能
+									} else if ("binaryOption_C".equals(jsOBj.get("strategy"))) {
+										System.out.println("二元期權 -C策略執行預選");
+
+										if ("wait".equals(jsOBj.getString("status"))) {
+											String Symbol = jsOBj.getString("symbol");
+											StringBuffer sb = new StringBuffer(Symbol);
+											Symbol = sb.insert(3, "/").toString();
+											System.out.println("取得此次下單商品" + Symbol);
+											Integer amountListInt = Integer.valueOf(jsOBj.getString("martingale"));
+											System.out.println("取得此次加碼次數" + amountListInt);
+											String Amount = amountlist[amountListInt];
+											System.out.println("取得此次下單金額" + Amount);
+											String BetHour = jsOBj.getString("expireHourTime");
+											System.out.println("取得此次下單小時" + BetHour);
+											String BetMinute = jsOBj.getString("expireMinuteTime");
+											System.out.println("取得此次下單分鐘" + BetMinute);
+											String BetType = jsOBj.getString("direction");
+											System.out.println("取得此次下單方向" + BetType);
+											// 如果金額不等於0才進入下單，可以讓使用者自行控制下單的方向
+											if (!Amount.equals("0")) {
+												Dukascopy.dukascopyBinaryOpctionPreselection(webObj, Symbol, Amount,
+														BetHour, BetMinute, BetType);
+											}
+										} else {
+											String BetType = jsOBj.getString("direction");
+											System.out.println("取得此次下單方向" + BetType);
+											Dukascopy.dukascopyBinaryOpctionMandatoryBetting(webObj,BetType);
 										}
 									}
 								}

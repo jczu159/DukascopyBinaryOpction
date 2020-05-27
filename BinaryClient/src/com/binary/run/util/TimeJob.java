@@ -126,7 +126,12 @@ public class TimeJob extends TimerTask {
 					System.out.println("恭喜獲得 : win");
 					isWin = true;
 				} else {
+					String co = jsonVal.getString("amountListInt");
+					String betAmount = amountlist[Integer.valueOf(co)];
+					Dukascopy.dukascopyBinaryOpction(webObj, jsonVal.getString("Symbol"),betAmount , "1", "0", "CALL");
 					System.out.println("失敗 : failure");
+					
+					
 				}
 
 			} else if (jsonVal.get("BetType").equals("PUT")) {
@@ -140,6 +145,9 @@ public class TimeJob extends TimerTask {
 					isWin = true;
 					System.out.println("恭喜獲得 : win");
 				} else {
+					String co = jsonVal.getString("amountListInt");
+					String betAmount = amountlist[Integer.valueOf(co)];
+					Dukascopy.dukascopyBinaryOpction(webObj, jsonVal.getString("Symbol"), betAmount, "1", "0", "PUT");
 					System.out.println("失敗 : failure");
 				}
 

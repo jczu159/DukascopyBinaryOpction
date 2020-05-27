@@ -42,6 +42,34 @@ public class Dukascopy {
 		setBetType(webObj, BetType);
 
 	}
+	
+	
+	public static void dukascopyBinaryOpctionPreselection(WebDriver webObj, String Symbol, String Amount, String BetHour,
+			String BetMinute, String BetType) throws InterruptedException {
+		// Login(webObj);
+		// *[@id="button-1267"]
+		System.out.println("請稍後，我們即將為您下單");
+		System.out.println("初始化模組中.....");
+		// 檢查品種物件是否存在。
+
+		selectOrderList(webObj, Symbol);
+		Thread.sleep(500);
+		// 處理下單金額
+		setBetAmount(webObj, Amount);
+		Thread.sleep(500);
+		// 設定小時
+		setBetHour(webObj, BetHour);
+		Thread.sleep(500);
+		// 設定分鐘
+		seMminutes(webObj, BetMinute);
+		Thread.sleep(500);
+	}
+	
+	
+	public static void dukascopyBinaryOpctionMandatoryBetting(WebDriver webObj, String BetType) throws InterruptedException {
+//		// 設定下單方向
+		setBetType(webObj, BetType);
+	}
 
 	public static boolean Login(WebDriver webObj, String account, String password) throws InterruptedException {
 		// 存取google Chrome 的 exe路徑

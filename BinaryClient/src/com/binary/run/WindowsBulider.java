@@ -30,7 +30,7 @@ public class WindowsBulider {
 	private JTextField chromePath;
 	private JTextField AmountSetting;
 	private JTextField passwordField;
-	private boolean isTest = true;
+	private boolean isTest = false;
 
 	/**
 	 * Launch the application.
@@ -176,9 +176,9 @@ public class WindowsBulider {
 		passwordField.setColumns(10);
 
 		if (isTest) {
-			accountText.setText("Wyke77");
+			accountText.setText("Soares257");
 			chromePath.setText("C:/Users/admin/Desktop/chromedriver.exe");
-			passwordField.setText("18124562");
+			passwordField.setText("84983884");
 			AmountSetting.setText("10,23,46,92,184,368,640");
 		} else {
 			InputStreamReader inputStream = null;
