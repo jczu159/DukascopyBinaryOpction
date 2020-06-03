@@ -35,8 +35,6 @@ public class Olymptrade {
 			
 			OlymptradeSelenium.searchSymbol(webObj, "EURUSD");
 			
-		
-			
 			OlymptradeSelenium.setTimeAndAmount(webObj, "0", "31", "26");
 		
 
