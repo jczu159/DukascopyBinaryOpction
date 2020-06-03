@@ -12,7 +12,7 @@ public class Servers {
 
 	public static void main(String[] args) throws IOException {
 		// 建立服務端
-		ServerSocket server = new ServerSocket(9877);
+		ServerSocket server = new ServerSocket(9533);
 		boolean flag = true;
 		// 接受客戶端請求
 		while (flag) {

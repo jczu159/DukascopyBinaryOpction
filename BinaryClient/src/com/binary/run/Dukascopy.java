@@ -265,9 +265,9 @@ public class Dukascopy {
 						"document.getElementById('bp-instrument-ticker-1082').childNodes[0].childNodes[0].childNodes[3].click()");
 				// *[@id="button-1006"]
 				try {
-					Thread.sleep(2000);
+					Thread.sleep(500);
 					webObj.findElement(By.xpath("//*[@id='button-1006']")).click();
-				} catch (InterruptedException e) {
+				} catch (Exception e) {
 					System.out.println("發生點選下單時錯誤:" + e);
 
 				}
@@ -276,9 +276,9 @@ public class Dukascopy {
 				((JavascriptExecutor) webObj).executeScript(
 						"document.getElementById('bp-instrument-ticker-1082').childNodes[0].childNodes[1].childNodes[3].click()");
 				try {
-					Thread.sleep(2000);
+					Thread.sleep(500);
 					webObj.findElement(By.xpath("//*[@id='button-1006']")).click();
-				} catch (InterruptedException e) {
+				} catch (Exception e) {
 					System.out.println("發生點選下單時錯誤:" + e);
 					// *[@id="button-1006-btnEl"]
 				}
