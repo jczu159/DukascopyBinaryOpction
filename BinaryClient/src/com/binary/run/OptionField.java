@@ -12,16 +12,18 @@ import com.binary.run.util.KeyMap;
 
 public class OptionField {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws AWTException {
 		System.out.println("開始運行程式");
-		OptionField("GBPUSD", "10", "5", "PUT");
+		Robot robot = new Robot();
+		OptionField(robot, "A", "10", "5");
+		startBet(robot, "CALL");
 	}
 
-	public static void OptionField(String symbol, String betAmount, String time, String type) {
+	public static void OptionField(Robot robot, String symbol, String betAmount, String time) {
 		// 建立 Robot 例項
 
 		try {
-			Robot robot = new Robot();
+
 			// 執行完一個事件後再執行下一個
 			robot.setAutoWaitForIdle(true);
 			System.out.println("移動到時間列表");
@@ -56,19 +58,22 @@ public class OptionField {
 			robot.delay(500);
 			setExpireTime(robot, time);
 
-			if (type.equals("CALL")) {
-				LeftClickItem(robot, 888, 630);
-				robot.mousePress(KeyEvent.BUTTON1_DOWN_MASK);		// 模擬按下滑鼠左鍵		
-				robot.mouseRelease(KeyEvent.BUTTON1_DOWN_MASK);	// 模擬釋放滑鼠左鍵
-			} else if (type.equals("PUT")) {
-				LeftClickItem(robot, 1017, 632);
-				robot.mousePress(KeyEvent.BUTTON1_DOWN_MASK);		// 模擬按下滑鼠左鍵		
-				robot.mouseRelease(KeyEvent.BUTTON1_DOWN_MASK);	// 模擬釋放滑鼠左鍵
-			}
 		} catch (Exception e) {
 			System.out.println("發生錯誤" + e);
 		}
 
+	}
+
+	public static void startBet(Robot robot, String type) {
+		if (type.equals("CALL")) {
+			LeftClickItem(robot, 888, 630);
+			robot.mousePress(KeyEvent.BUTTON1_DOWN_MASK); // 模擬按下滑鼠左鍵
+			robot.mouseRelease(KeyEvent.BUTTON1_DOWN_MASK); // 模擬釋放滑鼠左鍵
+		} else if (type.equals("PUT")) {
+			LeftClickItem(robot, 1017, 632);
+			robot.mousePress(KeyEvent.BUTTON1_DOWN_MASK); // 模擬按下滑鼠左鍵
+			robot.mouseRelease(KeyEvent.BUTTON1_DOWN_MASK); // 模擬釋放滑鼠左鍵
+		}
 	}
 
 	public static void LeftClickItem(Robot robot, int x, int y) {

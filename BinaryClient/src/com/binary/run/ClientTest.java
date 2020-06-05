@@ -1,5 +1,6 @@
 package com.binary.run;
 
+import java.awt.Robot;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
@@ -144,6 +145,7 @@ public class ClientTest {
 										}
 										// 執行C 策略 這裡是執行預選的功能
 									} else if ("binaryOption_C".equals(jsOBj.get("strategy"))) {
+										Robot robot = new Robot();
 										System.out.println("二元期權 -C策略執行預選");
 
 										if ("wait".equals(jsOBj.getString("status"))) {
@@ -163,13 +165,17 @@ public class ClientTest {
 											System.out.println("取得此次下單方向" + BetType);
 											// 如果金額不等於0才進入下單，可以讓使用者自行控制下單的方向
 											if (!Amount.equals("0")) {
-												Dukascopy.dukascopyBinaryOpctionPreselection(webObj, Symbol, Amount,
-														BetHour, BetMinute, BetType);
+//												Dukascopy.dukascopyBinaryOpctionPreselection(webObj, Symbol, Amount,
+//														BetHour, BetMinute, BetType);
+												OptionField.OptionField(robot, Symbol, Amount, BetMinute);
+												
 											}
 										} else {
 											String BetType = jsOBj.getString("direction");
 											System.out.println("取得此次下單方向" + BetType);
-											Dukascopy.dukascopyBinaryOpctionMandatoryBetting(webObj,BetType);
+										
+											OptionField.startBet(robot, BetType);
+//											Dukascopy.dukascopyBinaryOpctionMandatoryBetting(webObj,BetType);
 										}
 									}
 								}
