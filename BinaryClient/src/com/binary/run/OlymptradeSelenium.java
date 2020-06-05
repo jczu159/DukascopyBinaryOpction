@@ -75,7 +75,8 @@ public class OlymptradeSelenium {
 		Thread.sleep(1000);
 		//分鐘框
 		webObj.findElement(By.xpath("//*[@id='page-container']/div[3]/main/div[2]/div/div/div[1]/div/div/div[2]/div/div[2]/div[1]/div[1]/div/div[1]/div/div[2]/div/div/span/span[2]/input"))
-		.clear();
+		.sendKeys("0");
+		
 		
 		Thread.sleep(1000);
 		webObj.findElement(By.xpath("//*[@id='page-container']/div[3]/main/div[2]/div/div/div[1]/div/div/div[2]/div/div[2]/div[1]/div[1]/div/div[1]/div/div[2]/div/div/span/span[2]/input"))

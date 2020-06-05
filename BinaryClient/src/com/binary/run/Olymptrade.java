@@ -33,9 +33,9 @@ public class Olymptrade {
 			OlymptradeSelenium.Login(webObj, account, password);
 			
 			
-			OlymptradeSelenium.searchSymbol(webObj, "EURUSD");
+			OlymptradeSelenium.searchSymbol(webObj, "GBPUSD");
 			
-			OlymptradeSelenium.setTimeAndAmount(webObj, "0", "31", "26");
+			OlymptradeSelenium.setTimeAndAmount(webObj, "0", "13", "26");
 		
 
 			
