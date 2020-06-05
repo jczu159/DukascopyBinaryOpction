@@ -57,9 +57,13 @@ public class OptionField {
 			setExpireTime(robot, time);
 
 			if (type.equals("CALL")) {
-				LeftClickItem(robot, 889, 632);
+				LeftClickItem(robot, 888, 630);
+				robot.mousePress(KeyEvent.BUTTON1_DOWN_MASK);		// 模擬按下滑鼠左鍵		
+				robot.mouseRelease(KeyEvent.BUTTON1_DOWN_MASK);	// 模擬釋放滑鼠左鍵
 			} else if (type.equals("PUT")) {
-				LeftClickItem(robot, 1037, 631);
+				LeftClickItem(robot, 1017, 632);
+				robot.mousePress(KeyEvent.BUTTON1_DOWN_MASK);		// 模擬按下滑鼠左鍵		
+				robot.mouseRelease(KeyEvent.BUTTON1_DOWN_MASK);	// 模擬釋放滑鼠左鍵
 			}
 		} catch (Exception e) {
 			System.out.println("發生錯誤" + e);
