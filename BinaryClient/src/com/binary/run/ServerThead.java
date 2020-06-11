@@ -6,6 +6,8 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 
+import com.binary.run.util.LineNotification;
+
 /**
  * 伺服器執行緒，主要來處理多個客戶端的請求
  */
@@ -25,6 +27,8 @@ public class ServerThead extends Servers implements Runnable {
 			// 設定該客戶端的端點地址
 			socketName = socket.getRemoteSocketAddress().toString();
 			System.out.println("[初始化]" + socketName + "已加入連線");
+			LineNotification.callEvent("1IT95jitr3oq1U6LD1dgV2gVXe8m4uoR0Hvjhq6mgFq", "[初始化]" + socketName + "已加入連線");
+			
 			boolean flag = true;
 			while (flag) {
 				// 阻塞，等待該客戶端的輸出流
@@ -74,7 +78,7 @@ public class ServerThead extends Servers implements Runnable {
 	 */
 	public void closeConnect() throws IOException {
 		System.out.println("[Socket protected]" + socketName + "已斷連線");
-
+		LineNotification.callEvent("1IT95jitr3oq1U6LD1dgV2gVXe8m4uoR0Hvjhq6mgFq", "[Socket protected]" + socketName + "已斷連線");
 		// 移除沒連線上的客戶端
 		synchronized (sockets) {
 			sockets.remove(socket);
