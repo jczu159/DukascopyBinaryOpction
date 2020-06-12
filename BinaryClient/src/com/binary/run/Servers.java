@@ -6,6 +6,8 @@ import java.net.Socket;
 import java.util.List;
 import java.util.Vector;
 
+import com.binary.run.util.LineNotification;
+
 public class Servers {
 	// 將接收到的socket變成一個集合
 	protected static List<Socket> sockets = new Vector<>();
@@ -28,12 +30,13 @@ public class Servers {
 				// 捕獲異常。
 			} catch (Exception e) {
 				flag = false;
-				System.out.println("錯誤:" + e);
+				LineNotification.callEvent("1IT95jitr3oq1U6LD1dgV2gVXe8m4uoR0Hvjhq6mgFq",
+						"伺服器Main端捕捉到錯誤:" + e.toString());
 				e.printStackTrace();
 			}
 		}
-		// 關閉伺服器
-		server.close();
+//		// 關閉伺服器
+//		server.close();
 	}
 
 }
