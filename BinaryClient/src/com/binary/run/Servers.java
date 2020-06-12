@@ -28,6 +28,7 @@ public class Servers {
 				// 捕獲異常。
 			} catch (Exception e) {
 				flag = false;
+				System.out.println("錯誤:" + e);
 				e.printStackTrace();
 			}
 		}
