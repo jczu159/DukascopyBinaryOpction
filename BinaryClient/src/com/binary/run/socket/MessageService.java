@@ -10,10 +10,12 @@ public class MessageService implements Runnable {
 
 	private final Socket client;
 	private final ServerSocket serverSocket;
+	private static List<Socket> socketsObj;
 
-	MessageService(ServerSocket serverSocket, Socket client) {
+	MessageService(ServerSocket serverSocket, Socket client, List<Socket> socketsObj) {
 		this.client = client;
 		this.serverSocket = serverSocket;
+		this.socketsObj = socketsObj;
 	}
 
 	@Override
@@ -26,10 +28,9 @@ public class MessageService implements Runnable {
 			out = new PrintWriter(new OutputStreamWriter(client.getOutputStream()));
 
 			String line;
-			System.out.println("Waiting for " + clientName);
 			while ((line = in.readLine()) != null) {
 				System.out.println(clientName + ": " + line);
-//				print(line);
+				print(line);
 //				out.println(line);
 //				out.flush();
 			}
@@ -46,13 +47,13 @@ public class MessageService implements Runnable {
 		}
 	}
 
-//	private void print(String msg) throws IOException {
-//		List<Socket> socket = RoutService.socketList;
-//		PrintWriter out = null;
-//		for (Socket sc : socket) {
-//			out = new PrintWriter(sc.getOutputStream());
-//			out.println(msg);
-//			out.flush();
-//		}
-//	}
+	private void print(String msg) throws IOException {
+
+		PrintWriter out = null;
+		for (Socket sc : socketsObj) {
+			out = new PrintWriter(sc.getOutputStream());
+			out.println(msg);
+			out.flush();
+		}
+	}
 }

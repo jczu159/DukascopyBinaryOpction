@@ -10,7 +10,7 @@ import com.binary.run.Servers;
 
 public class RoutService extends Servers  implements Runnable {
 	
-	protected static List<Socket> sockets = new Vector<>();
+	public static List<Socket> socketsObj = new Vector<>();
 	private final ServerSocket serverSocket;
 	private final ExecutorService pool;
 
@@ -26,18 +26,14 @@ public class RoutService extends Servers  implements Runnable {
 			while (true) {
 				
 				Socket client = serverSocket.accept();
-				
-				synchronized (sockets) {
-					sockets.add(client);
-				}
-
-				pool.execute(new MessageService(serverSocket, client ));
+				socketsObj.add(client);
+				pool.execute(new MessageService(serverSocket, client , socketsObj ));
 				System.out.println("[初始化]" +   client.getInetAddress().toString()  + "已加入連線");
 				
 			}
 		}
 		catch (IOException e) {
-			System.out.println("Server: IOException");
+			System.out.println("Server: IOException" + e);
 		}
 		finally {
 			System.out.println("Server: Shutting down RoutService");
@@ -49,8 +45,12 @@ public class RoutService extends Servers  implements Runnable {
 					serverSocket.close();
 				}
 			}
-			catch (IOException e) {}
-			catch (InterruptedException e) {}
+			catch (IOException e) {
+				System.out.println("Server: IOException" + e);
+			}
+			catch (InterruptedException e) {
+				System.out.println("Server: InterruptedException" + e);
+			}
 		}
 	}
 }
