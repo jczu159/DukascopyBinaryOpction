@@ -36,21 +36,21 @@ public class RoutService extends Servers  implements Runnable {
 			System.out.println("Server: IOException" + e);
 		}
 		finally {
-			System.out.println("Server: Shutting down RoutService");
+//			System.out.println("Server: Shutting down RoutService");
 			pool.shutdown();
-			try {
-				pool.awaitTermination((long)4, TimeUnit.SECONDS);
-				if(!serverSocket.isClosed()) {
-					System.out.println("Server: Shutting down ServerSocket");
-					serverSocket.close();
-				}
+//			try {
+//				pool.awaitTermination((long)4, TimeUnit.SECONDS);
+//				if(!serverSocket.isClosed()) {
+//					System.out.println("Server: Shutting down ServerSocket");
+//					serverSocket.close();
+//				}
 			}
-			catch (IOException e) {
-				System.out.println("Server: IOException" + e);
-			}
-			catch (InterruptedException e) {
-				System.out.println("Server: InterruptedException" + e);
-			}
-		}
+//			catch (IOException e) {
+//				System.out.println("Server: IOException" + e);
+//			}
+//			catch (InterruptedException e) {
+//				System.out.println("Server: InterruptedException" + e);
+//			}
+//		}
 	}
 }

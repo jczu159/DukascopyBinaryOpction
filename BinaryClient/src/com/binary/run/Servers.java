@@ -16,6 +16,8 @@ public class Servers {
 		// 建立服務端
 		ServerSocket server = new ServerSocket(9877);
 		boolean flag = true;
+		Thread thread = null;
+
 		// 接受客戶端請求
 		while (flag) {
 			try {
@@ -25,7 +27,7 @@ public class Servers {
 					sockets.add(accept);
 				}
 				// 多個伺服器執行緒進行對客戶端的響應
-				Thread thread = new Thread(new ServerThead(accept));
+				thread = new Thread(new ServerThead(accept));
 				thread.start();
 				// 捕獲異常。
 			} catch (Exception e) {
@@ -33,10 +35,12 @@ public class Servers {
 				LineNotification.callEvent("1IT95jitr3oq1U6LD1dgV2gVXe8m4uoR0Hvjhq6mgFq",
 						"伺服器Main端捕捉到錯誤:" + e.toString());
 				e.printStackTrace();
+			} finally {
+				thread.interrupt();
 			}
 		}
-//		// 關閉伺服器
-//		server.close();
+		// // 關閉伺服器
+		// server.close();
 	}
 
 }

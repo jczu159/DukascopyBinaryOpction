@@ -1,8 +1,7 @@
 package com.binary.run;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.InputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
 
@@ -24,37 +23,57 @@ public class ServerThead extends Servers implements Runnable {
 	@Override
 	public void run() {
 		try {
-			BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-			// 設定該客戶端的端點地址
 			socketName = socket.getRemoteSocketAddress().toString();
 			System.out.println("[初始化]" + socketName + "已加入連線");
+			InputStream inputStream = socket.getInputStream();
+			byte[] buffer = new byte[1024];
+			int len = -1;
+			while ((len = inputStream.read(buffer)) != -1) {
+
+				String data = new String(buffer, 0, len);
+
+				String msg = "[Get Message-Form]" + socketName + ": Message Body : " + data;
+				System.out.println(msg);
+
+				print(data);
+
+			}
+
+			// BufferedReader reader = new BufferedReader(new
+			// InputStreamReader(socket.getInputStream()));
+			// String s;
+			// // 設定該客戶端的端點地址
+			// socketName = socket.getRemoteSocketAddress().toString();
+			// System.out.println("[初始化]" + socketName + "已加入連線");
 
 			// socket
-			boolean flag = true;
-			while (flag) {
-				// 阻塞，等待該客戶端的輸出流
-				String line = reader.readLine();
-				// 若客戶端退出，則退出連線。
-				if (line == null) {
-					flag = false;
-					continue;
-				}
-				// 用於回覆當前 socket io ping pon機制的 method
-				JSONObject jsonObj = new JSONObject();
-				if (line.contains("keepAlive-ping")) {
-					jsonObj = (JSONObject) jsonObj.parse(line);
-					String account = jsonObj.get("account") == null ? "" : jsonObj.get("account").toString();
-					jsonObj.clear();
-					jsonObj.put("cmd", "keepAlive-pong");
-					jsonObj.put("account", account);
-					line = jsonObj.toString();
-				} else {
-					String msg = "[Get Message-Form]" + socketName + ": Message Body : " + line;
-					System.out.println(msg);
-				}
-				// 向線上客戶端輸出資訊
-				print(line);
-			}
+			// boolean flag = true;
+			// while ((s = reader.readLine()) != null) {
+			// // 阻塞，等待該客戶端的輸出流
+			// String line = reader.readLine();
+			// // 若客戶端退出，則退出連線。
+			// if (line == null) {
+			// flag = false;
+			// continue;
+			// }
+			// // 用於回覆當前 socket io ping pon機制的 method
+			// JSONObject jsonObj = new JSONObject();
+			// if (line.contains("keepAlive-ping")) {
+			// jsonObj = (JSONObject) jsonObj.parse(line);
+			// String account = jsonObj.get("account") == null ? "" :
+			// jsonObj.get("account").toString();
+			// jsonObj.clear();
+			// jsonObj.put("cmd", "keepAlive-pong");
+			// jsonObj.put("account", account);
+			// line = jsonObj.toString();
+			// } else {
+			// String msg = "[Get Message-Form]" + socketName + ": Message Body
+			// : " + line;
+			// System.out.println(msg);
+			// }
+			// // 向線上客戶端輸出資訊
+			// print(line);
+			// }
 
 			closeConnect();
 		} catch (IOException e) {
