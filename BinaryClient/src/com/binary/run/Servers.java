@@ -6,41 +6,33 @@ import java.net.Socket;
 import java.util.List;
 import java.util.Vector;
 
-import com.binary.run.util.LineNotification;
-
 public class Servers {
-	// å°‡æ¥æ”¶åˆ°çš„socketè®Šæˆä¸€å€‹é›†åˆ
+	// ±N±µ¦¬¨ìªºsocketÅÜ¦¨¤@­Ó¶°¦X
 	protected static List<Socket> sockets = new Vector<>();
 
 	public static void main(String[] args) throws IOException {
-		// å»ºç«‹æœå‹™ç«¯
+		// «Ø¥ßªA°Èºİ
 		ServerSocket server = new ServerSocket(9877);
 		boolean flag = true;
-		Thread thread = null;
-
-		// æ¥å—å®¢æˆ¶ç«¯è«‹æ±‚
+		// ±µ¨ü«È¤áºİ½Ğ¨D
 		while (flag) {
 			try {
-				// é˜»å¡ç­‰å¾…å®¢æˆ¶ç«¯çš„é€£ç·š
+				// ªı¶ëµ¥«İ«È¤áºİªº³s½u
 				Socket accept = server.accept();
 				synchronized (sockets) {
 					sockets.add(accept);
 				}
-				// å¤šå€‹ä¼ºæœå™¨åŸ·è¡Œç·’é€²è¡Œå°å®¢æˆ¶ç«¯çš„éŸ¿æ‡‰
-				thread = new Thread(new ServerThead(accept));
+				// ¦h­Ó¦øªA¾¹°õ¦æºü¶i¦æ¹ï«È¤áºİªºÅTÀ³
+				Thread thread = new Thread(new ServerThead(accept));
 				thread.start();
-				// æ•ç²ç•°å¸¸ã€‚
+				// ®·Àò²§±`¡C
 			} catch (Exception e) {
 				flag = false;
-				LineNotification.callEvent("1IT95jitr3oq1U6LD1dgV2gVXe8m4uoR0Hvjhq6mgFq",
-						"ä¼ºæœå™¨Mainç«¯æ•æ‰åˆ°éŒ¯èª¤:" + e.toString());
 				e.printStackTrace();
-			} finally {
-				thread.interrupt();
 			}
 		}
-		// // é—œé–‰ä¼ºæœå™¨
-		// server.close();
+		// Ãö³¬¦øªA¾¹
+		server.close();
 	}
 
 }

@@ -44,7 +44,7 @@ public class LineNotification {
 	}
 
 	private static String replaceProcess(String txt) {
-		txt = replaceAllRegex(txt, "\\\\", "￥"); // \
+		txt = replaceAllRegex(txt, "\\\\", "嚙�"); // \
 		return txt;
 	}
 
@@ -56,8 +56,8 @@ public class LineNotification {
 
 	public static void main(String[] args) {
 
-		callEvent("nVxs1v7eFKEKXXV4rPsLnU4LzHLmhtqS4X3ZNbvPDD5",
-				"公告:測試123");
+		callEvent("MomP7AjIDzk8hxG9nPc8O3zG3DS5rs9uNusSy5W2GNG",
+				"阿幹  斷線拉");
 
 	}
 }
